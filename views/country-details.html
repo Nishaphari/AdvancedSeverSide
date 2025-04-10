@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Country Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 350px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    #country-info {
+      margin-top: 20px;
+      display: none;
+    }
+
+    #country-info h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    #country-info p {
+      font-size: 1rem;
+      color: #34495e;
+    }
+
+    #country-info img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Get Country Details</h1>
+    
+    <!-- Form to submit the country name -->
+    <form id="country-form">
+      <input type="text" id="country" name="country" placeholder="Enter country name" required />
+      <button type="submit">Get Details</button>
+    </form>
+
+    <!-- Country Info Section -->
+    <div id="country-info">
+      <h2>Country Info:</h2>
+      <p><strong>Country Name:</strong> <span id="name"></span></p>
+      <p><strong>Capital:</strong> <span id="capital"></span></p>
+      <p><strong>Region:</strong> <span id="region"></span></p>
+      <p><strong>Subregion:</strong> <span id="subregion"></span></p>
+      <p><strong>Population:</strong> <span id="population"></span></p>
+      <p><strong>Area:</strong> <span id="area"></span></p>
+      <p><strong>Flag:</strong> <img id="flag" alt="Flag" width="100"></p>
+    </div>
+  </div>
+
+  <script>
+    // Handle form submission
+    document.getElementById('country-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const countryName = document.getElementById('country').value.trim();
+
+      // If the country name is empty, show an alert and return
+      if (!countryName) {
+        alert('Please enter a country name!');
+        return;
+      }
+
+      // Fetch country details from API
+      fetch(`https://restcountries.com/v3.1/name/${countryName}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Country not found!');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const country = data[0];
+
+          // Update the UI with country details
+          document.getElementById('name').textContent = country.name.common;
+          document.getElementById('capital').textContent = country.capital ? country.capital[0] : 'N/A';
+          document.getElementById('region').textContent = country.region;
+          document.getElementById('subregion').textContent = country.subregion;
+          document.getElementById('population').textContent = country.population.toLocaleString();
+          document.getElementById('area').textContent = country.area.toLocaleString();
+          document.getElementById('flag').src = country.flags[1];  // PNG flag
+
+          // Display the country info section
+          document.getElementById('country-info').style.display = 'block';
+        })
+        .catch(error => {
+          console.error('Error fetching country details:', error);
+          alert('An error occurred. Please try again later.');
+        });
+    });
+  </script>
+</body>
+</html>
