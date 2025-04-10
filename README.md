@@ -1,9 +1,9 @@
 # Secure API Middleware Project
 
-## 🔒 Description
+##  Description
 A secure Express.js API middleware app that supports user registration, API key management, and country data retrieval using the RestCountries API. The application uses *MySQL* for persistent data storage.
 
-## 🚀 Features
+## Features
 - User Registration & Login (with password hashing)
 - Session-based Authentication
 - API Key Generation & Validation
@@ -11,7 +11,7 @@ A secure Express.js API middleware app that supports user registration, API key 
 - MySQL Database Integration
 - EJS Templating for Views
 
-## 🛠 Setup Instructions
+## Setup Instructions
 
 1. Clone the repository:
 
